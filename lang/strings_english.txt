@@ -35,6 +35,7 @@ $s_plugin_Slack_columns = 'Slack Columns';
 $s_plugin_Slack_bug_created = '%s created <%s|%s>.';
 $s_plugin_Slack_bug_updated = '%s updated <%s|%s>.';
 $s_plugin_Slack_bug_deleted = '%s deleted %s.';
+$s_plugin_Slack_bug_closed = '%s has completed <%s|%s>.';
 $s_plugin_Slack_bugnote_created = "%s commented on <%s|%s> saying:\n%s";
 $s_plugin_Slack_bugnote_updated = "%s edited a comment on <%s|%s> saying:\n%s";
 $s_plugin_Slack_bugnote_deleted = "%s deleted a comment on <%s|%s>.";

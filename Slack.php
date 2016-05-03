@@ -102,19 +102,31 @@ class SlackPlugin extends MantisPlugin {
     }
   }
 
-  function bug_report_update($event, $bug, $bug_id) {
+  function bug_report_update($event, $old_bug, $new_bug) {
     $this->skip = $this->skip || gpc_get_bool('slack_skip');
 
+    $bug = is_object($new_bug) ? $new_bug : $old_bug;
+
     $project = project_get_name($bug->project_id);
-    $url = string_get_bug_view_url_with_fqdn($bug_id);
+    $url = string_get_bug_view_url_with_fqdn($bug->id);
     $summary = $this->clean_summary($bug);
     $reporter = '@' . user_get_name(auth_get_current_user_id());
     $reporter = $this->get_user_alias($reporter);
+    $lang_event = $event === 'EVENT_REPORT_BUG' ? 'bug_created' : 'bug_updated';
 
-    $msg = sprintf(plugin_lang_get($event === 'EVENT_REPORT_BUG' ? 'bug_created' : 'bug_updated'),
+    // If the status is closed then we will change the event
+    
+    // TODO This should not be hardcoded as 90
+    if ($old_bug->status !== $bug->status && $bug->status === 90) {
+      $lang_event = 'bug_closed';
+    }
+
+    $msg = sprintf(plugin_lang_get($lang_event),
       $reporter, $url, $summary
     );
-    $this->notify($msg, $this->get_webhook($project), $this->get_channel($project), $this->get_attachment($bug));
+    $attachment = $this->get_attachment($bug);
+
+    $this->notify($msg, $this->get_webhook($project), $this->get_channel($project), $attachment);
   }
 
   function clean_summary($bug) {
