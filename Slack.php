@@ -168,7 +168,7 @@ class SlackPlugin extends MantisPlugin {
     );
     $bot_icon = trim(plugin_config_get('bot_icon'));
     if (empty($bot_icon)) {
-      $payload['icon_url'] = 'https://raw.githubusercontent.com/infojunkie/MantisBT-Slack/master/mantis_logo.png';
+      $payload['icon_url'] = 'https://raw.githubusercontent.com/aklump/MantisBT-Slack/master/itls_logo.png';
     }
     elseif (preg_match('/^:[a-z0-9_\-]+:$/i', $bot_icon)) {
       $payload['icon_emoji'] = $bot_icon;
